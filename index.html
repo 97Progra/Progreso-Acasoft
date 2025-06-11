@@ -3,219 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
     <title>Dashboard - Progreso de Migración del Sistema</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        .chart-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .chart-title {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .progress-overview {
-            grid-column: 1 / -1;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 25px;
-            align-items: center;
-        }
-
-        .controls-panel {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .control-group {
-            margin-bottom: 20px;
-        }
-
-        .control-group label {
-            display: block;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-        }
-
-        .control-group input {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .control-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .update-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .update-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: #e1e5e9;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border-radius: 10px;
-            transition: width 0.8s ease;
-        }
-
-        .hidden-admin-btn {
-            display: inline-block;
-            font-size: 1.2rem;
-            opacity: 0.1;
-            cursor: pointer;
-            transition: opacity 0.3s ease, transform 0.2s ease;
-            padding: 5px;
-            border-radius: 50%;
-            user-select: none;
-        }
-
-        .hidden-admin-btn:hover {
-            opacity: 0.8;
-            transform: scale(1.1);
-        }
-
-        .admin-access {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .chart-container canvas {
-            height: 300px !important;
-            width: 100% !important;
-        }
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .progress-overview {
-                grid-column: 1;
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -252,12 +42,67 @@
                     <button class="update-btn" onclick="toggleAdminMode()" style="background: #dc3545; margin-top: 10px;">🔒 Ocultar Panel</button>
                 </div>
 
+                <!-- Informacion pagina de Asdi -->
+                <div class="admin-access" id="adminAccess">
+                    <div style="text-align: center;  margin-bottom: 15px;">
+                        💡 <div class="chart-title">Página de ASDI</div>
+                        Estado
+                        <div style="margin-top: 15px;">
+                            <div style="font-size: 0.8rem; opacity: 0.5; margin-bottom: 5px;"><Strong class="estado verde"></Strong>Funcionando</div>
+                            <!-- Botón oculto como parte del diseño -->
+                            <div> </div>    
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informacion pagina Empresarial -->
+                <div class="admin-access" id="adminAccess">
+                    <div style="text-align: center;  margin-bottom: 15px;">
+                        💡 <div class="chart-title">Página Empresarial</div>
+                        Estado
+                        <div style="margin-top: 15px;">
+                            <div style="font-size: 0.8rem; opacity: 0.5; margin-bottom: 5px;"><Strong class="estado verde"></Strong>Funcionando</div>
+                            <!-- Botón oculto como parte del diseño -->
+                            <div ><Strong class="estado amarillo"></Strong> Pendiente para mantenimiento de librerías y modificaciones en la evaluación de las empresas </div>    
+                           
+                        </div>
+                    </div>
+                </div>
+
+                  <!-- Informacion DPT soluciones MOODLE-->
+                <div class="admin-access" id="adminAccess">
+                    <div style="text-align: center;  margin-bottom: 15px;">
+                        💡 <div class="chart-title">Moodle (DPT Soluciones)</div>
+                        Estado de Moodle
+                        <div style="margin-top: 15px;">
+                            <div style="font-size: 0.8rem; opacity: 0.5; margin-bottom: 5px;"><Strong class="estado verde"></Strong>Funcionando</div>
+                            <!-- Botón oculto como parte del diseño -->
+                            <div ><Strong class="estado rojo"></Strong>Pendiente para revisión e inicio de conexiones</div>    
+                           
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informacion AWS-->
+                <div class="admin-access" id="adminAccess">
+                    <div style="text-align: center;  margin-bottom: 15px;">
+                        💡 <div class="chart-title">Costos Amazon</div>
+                        Estado de AWS
+                        <div style="margin-top: 15px;">
+                            <div style="font-size: 0.8rem; opacity: 0.5; margin-bottom: 5px;"><Strong class="estado verde"></Strong>Funcionando</div>
+                            <!-- Botón oculto como parte del diseño -->
+                            <div>Mensualidad <Strong>297 USD</Strong></div>    
+                           
+                        </div>
+                    </div>
+                </div>
+
                 <div class="chart-container">
                     <div class="chart-title">📊 Progreso General de Migración-ACASOFT</div>
                     <canvas id="generalProgressChart"></canvas>
                 </div>
+            
             </div>
-
             <!-- Distribución por Roles -->
             <div class="chart-container">
                 <div class="chart-title">🎯 Distribución por Roles</div>
@@ -297,234 +142,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // Configuración inicial
-        const roleWeights = {
-            students: 25,
-            teachers: 25,
-            admin: 50
-        };
-
-        let currentProgress = {
-            students: 90,
-            teachers: 0,
-            admin: 0
-        };
-
-        // Configuración de gráficos
-        const chartConfig = {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        padding: 20,
-                        font: {
-                            size: 12
-                        }
-                    }
-                }
-            }
-        };
-
-        // Gráfico de progreso general (Doughnut)
-        const generalProgressCtx = document.getElementById('generalProgressChart').getContext('2d');
-        const generalProgressChart = new Chart(generalProgressCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Completado', 'Pendiente'],
-                datasets: [{
-                    data: [22.5, 77.5],
-                    backgroundColor: [
-                        'rgba(102, 126, 234, 0.8)',
-                        'rgba(225, 229, 233, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(102, 126, 234, 1)',
-                        'rgba(225, 229, 233, 1)'
-                    ],
-                    borderWidth: 2,
-                    cutout: '60%'
-                }]
-            },
-            options: {
-                ...chartConfig,
-                plugins: {
-                    ...chartConfig.plugins,
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.label + ': ' + context.parsed + '%';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Gráfico de distribución por roles (Pie)
-        const roleDistributionCtx = document.getElementById('roleDistributionChart').getContext('2d');
-        const roleDistributionChart = new Chart(roleDistributionCtx, {
-            type: 'pie',
-            data: {
-                labels: ['👨‍🎓 Estudiantes', '👨‍🏫 Docentes', '👨‍💼 Administrativo'],
-                datasets: [{
-                    data: [25, 25, 50],
-                    backgroundColor: [
-                        'rgba(54, 162, 235, 0.8)',
-                        'rgba(255, 206, 86, 0.8)',
-                        'rgba(255, 99, 132, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(255, 99, 132, 1)'
-                    ],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                ...chartConfig,
-                plugins: {
-                    ...chartConfig.plugins,
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.label + ': ' + context.parsed + '% del proyecto';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Gráfico de progreso detallado (Bar)
-        const detailedProgressCtx = document.getElementById('detailedProgressChart').getContext('2d');
-        const detailedProgressChart = new Chart(detailedProgressCtx, {
-            type: 'bar',
-            data: {
-                labels: ['👨‍🎓 Estudiantes', '👨‍🏫 Docentes', '👨‍💼 Administrativo'],
-                datasets: [{
-                    label: 'Progreso (%)',
-                    data: [90, 0, 0],
-                    backgroundColor: [
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(255, 206, 86, 0.6)',
-                        'rgba(255, 99, 132, 0.6)'
-                    ],
-                    borderColor: [
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(255, 99, 132, 1)'
-                    ],
-                    borderWidth: 2,
-                    borderRadius: 5
-                }]
-            },
-            options: {
-                ...chartConfig,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: {
-                            callback: function(value) {
-                                return value + '%';
-                            }
-                        }
-                    }
-                },
-                plugins: {
-                    ...chartConfig.plugins,
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return 'Progreso: ' + context.parsed.y + '%';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Función para calcular el progreso total
-        function calculateTotalProgress() {
-            return (
-                (currentProgress.students * roleWeights.students / 100) +
-                (currentProgress.teachers * roleWeights.teachers / 100) +
-                (currentProgress.admin * roleWeights.admin / 100)
-            );
-        }
-
-        // Función para actualizar estadísticas
-        function updateStats() {
-            const totalProgress = calculateTotalProgress();
-            const completedRoles = [currentProgress.students, currentProgress.teachers, currentProgress.admin]
-                .filter(progress => progress === 100).length;
-            const remainingWork = 100 - totalProgress;
-            
-            document.getElementById('totalProgress').textContent = totalProgress.toFixed(1) + '%';
-            document.getElementById('totalProgressBar').style.width = totalProgress + '%';
-            document.getElementById('completedRoles').textContent = completedRoles + '/3';
-            document.getElementById('remainingWork').textContent = remainingWork.toFixed(1) + '%';
-            
-            // Determinar siguiente fase
-            let nextPhase = 'Pruebas';
-            if (totalProgress === 100) {
-                nextPhase = 'Despliegue';
-            } else if (totalProgress > 75) {
-                nextPhase = 'Pruebas Finales';
-            }
-            document.getElementById('nextPhase').textContent = nextPhase;
-        }
-
-        // Función para actualizar todos los gráficos
-        function updateCharts() {
-            // Obtener valores de los inputs
-            currentProgress.students = parseInt(document.getElementById('studentProgress').value);
-            currentProgress.teachers = parseInt(document.getElementById('teacherProgress').value);
-            currentProgress.admin = parseInt(document.getElementById('adminProgress').value);
-            
-            const totalProgress = calculateTotalProgress();
-            const remainingProgress = 100 - totalProgress;
-            
-            // Actualizar gráfico de progreso general
-            generalProgressChart.data.datasets[0].data = [totalProgress, remainingProgress];
-            generalProgressChart.update('active');
-            
-            // Actualizar gráfico de progreso detallado
-            detailedProgressChart.data.datasets[0].data = [
-                currentProgress.students,
-                currentProgress.teachers,
-                currentProgress.admin
-            ];
-            detailedProgressChart.update('active');
-            
-            // Actualizar estadísticas
-            updateStats();
-        }
-
-        // Inicializar estadísticas
-        updateStats();
-
-        // Función para alternar modo administrador
-        function toggleAdminMode() {
-            const controlsPanel = document.getElementById('controlsPanel');
-            const adminAccess = document.getElementById('adminAccess');
-            
-            if (controlsPanel.style.display === 'none') {
-                controlsPanel.style.display = 'block';
-                adminAccess.style.display = 'none';
-            } else {
-                controlsPanel.style.display = 'none';
-                adminAccess.style.display = 'block';
-            }
-        }
-
-        // Los gráficos mantienen su altura automática definida por CSS
-    </script>
+    <script src="general.js"></script>
 </body>
 </html>
